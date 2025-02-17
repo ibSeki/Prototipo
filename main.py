@@ -1,7 +1,8 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, status, Depends
 import classes
 import model
-from database import engine
+from database import engine, get_db
+from sqlalchemy.orm import Session
 
 model.Base.metadata.create_all(bind=engine)
 
@@ -11,7 +12,9 @@ app = FastAPI()
 def read_root():
     return {"Hello": "lala"}
 
-@app.post("/criar")
-def criar_valores(nova_mensagem: classes.Mensagem):
-    print(nova_mensagem)
-    return {"Mensagem": f"Titulo: {nova_mensagem.titulo} Conteudo: {nova_mensagem.conteudo} Publicada: {nova_mensagem.publicada}"}
+@app.post("/criar", status_code=status.HTTP_201_CREATED)
+def criar_valores(nova_mensagem: classes.Mensagem, db: Session = Depends(get_db)):
+    mensagem_criada = model.Model_Mensagem(titulo=nova_mensagem.titulo, conteudo=nova_mensagem.conteudo, publicada=nova_mensagem.publicada)
+    db.add(mensagem_criada)
+    db.commit()
+    return {"Mensagem": mensagem_criada}
