@@ -1,20 +1,15 @@
 name: Build and Deploy
 
 on:
-  push:
-    branches:
-      - master
-  pull_request:
-    branches:
-      - master
+  - push
+  - pull_request
 
 jobs:
-  build:
+  job1:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout do repositório
+      - name: pulling git repo
         uses: actions/checkout@v2
 
-      - name: Exibir mensagem
-        run: echo "Hello, GitHub Actions!"
+      - name: Hello
+        run: echo "Hello"
