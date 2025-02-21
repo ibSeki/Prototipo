@@ -28,6 +28,10 @@ model.Base.metadata.create_all(bind=engine)
 def read_root():
     return {"message": "API está rodando!"}
 
+@app.get("/quadrado/{num}")
+def square(num: int):
+    return {"resultado": num ** 2}  # Calcula o quadrado do número
+
 @app.get("/mensagens", response_model=List[classes.Mensagem], status_code=status.HTTP_200_OK)
 async def buscar_valores(db: Session = Depends(get_db), skip: int = 0, limit: int = 100):
     mensagens = db.query(model.Model_Mensagem).offset(skip).limit(limit).all()

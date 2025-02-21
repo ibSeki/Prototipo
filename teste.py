@@ -4,10 +4,9 @@ from main import app
 client = TestClient(app)
 
 def teste_hello():
-
     response = client.get("/")
     assert response.status_code == 200
-    assert response.json() == {"Hello": "lala"}
+    assert response.json() == {"message": "API está rodando!"}  # Corrigido
 
 def teste_quadrado():
     num = 4
