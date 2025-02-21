@@ -13,7 +13,7 @@ jobs:
         image: postgres:13
         env:
           POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: Batleforce*3
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
           POSTGRES_DB: nome_database
         ports:
           - 5432:5432
@@ -38,5 +38,5 @@ jobs:
 
       - name: Executar pytest
         env:
-          DATABASE_URL: postgresql://postgres:admin@localhost:5432/nome_database
+          DATABASE_URL: postgresql://postgres:${{ secrets.POSTGRES_PASSWORD }}@localhost:5432/nome_database
         run: pytest teste.py
